@@ -7,17 +7,18 @@ import IIcons from 'react-native-vector-icons/Ionicons';
 import SLIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 // containers
-import Feed from './../../features/feed/container/feed-container';
-import Profile from './../../features/profile/container/profile-container';
+import Feed from './feed/feed-routes';
+import Add from './add/add-routes';
+import Profile from './profile/profile-routes';
 
 export default createBottomTabNavigator(
   {
     Feed: { screen: Feed },
-    Add: { screen: Feed },
-    Profile: { screen: Feed }
+    Add: { screen: Add },
+    Profile: { screen: Profile }
   },
   {
-    initialRouteName: 'Profile',
+    initialRouteName: 'Feed',
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: function tabBarIcon({ tintColor }) {
         tabBarIcon.propTypes = {
