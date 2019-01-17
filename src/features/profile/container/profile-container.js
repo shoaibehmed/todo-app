@@ -11,9 +11,17 @@ import ProfileComponent from './../components/profile-component';
 import HeaderComponent from './../../../shared/components/header/header-component';
 
 class ProfileContainer extends Component {
-  static navigationOptions = {
-    header: <HeaderComponent title={'Hello, Ali'} />
+  static navigationOptions = ({ navigation }) => {
+    const params = navigation.state.params || {};
+
+    return {
+      header: <HeaderComponent title={`Hello, ${params.name}`} />
+    };
   };
+
+  componentDidMount() {
+    this.props.navigation.setParams({ name: this.props.user });
+  }
 
   onLogout() {
     const { user } = this.props;

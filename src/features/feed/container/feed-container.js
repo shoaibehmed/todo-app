@@ -31,8 +31,36 @@ class FeedContainer extends Component {
       .catch(error => console.warn(error));
   }
 
+  completeTodo(index) {
+    const feed = [...this.props.feed];
+    feed[index].completed = true;
+
+    AsyncStorage.setItem(`${this.props.user}-feed`, JSON.stringify(feed))
+      .then(() => {
+        this.props.setFeed(feed);
+      })
+      .catch(error => console.warn(error));
+  }
+
+  deleteTodo(id) {
+    const feed = [...this.props.feed];
+    const newFeed = feed.filter((item, index) => index !== id);
+    AsyncStorage.setItem(`${this.props.user}-feed`, JSON.stringify(newFeed))
+      .then(() => {
+        this.props.setFeed(newFeed);
+      })
+      .catch(error => console.warn(error));
+  }
+
   render() {
-    return <FeedComponent feed={this.props.feed} colors={this.props.colors} />;
+    return (
+      <FeedComponent
+        feed={this.props.feed}
+        colors={this.props.colors}
+        completeTodo={this.completeTodo.bind(this)}
+        deleteTodo={this.deleteTodo.bind(this)}
+      />
+    );
   }
 }
 

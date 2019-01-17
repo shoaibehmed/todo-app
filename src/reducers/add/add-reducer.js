@@ -3,7 +3,8 @@ import { addActionTypes } from './../../features/add/actions/add-actions';
 const formData = {
   message: '',
   dueDate: '',
-  badge: 1
+  badge: 1,
+  completed: false
 };
 
 const initialState = {

@@ -9,7 +9,6 @@ import configureStore from './src/reducers/store';
 
 // actions
 import { setUser } from './src/features/login/actions/login-actions';
-import { setFeed } from './src/features/feed/actions/feed-actions';
 
 // signed out routes
 import SignedOutRoutes from './src/routes/signed-out/signed-out-routes';
