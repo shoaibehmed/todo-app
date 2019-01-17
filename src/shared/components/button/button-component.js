@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const ButtonComponent = props => {
   return (
-    <TouchableOpacity onPress={props.onPress}>
+    <TouchableOpacity onPress={props.onPress} style={{ marginTop: 15 }}>
       <View style={styles.btnView} pointerEvents={'none'}>
         <Text style={{ color: '#fff', textAlign: 'center' }}>{props.title}</Text>
       </View>
@@ -17,8 +17,7 @@ const styles = StyleSheet.create({
   btnView: {
     backgroundColor: 'rgb(76,217,100)',
     padding: 15,
-    borderRadius: 3,
-    marginTop: 15
+    borderRadius: 3
   }
 });
 

@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { View, StyleSheet, TextInput, TouchableOpacity, Text } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Text,
+  ScrollView
+} from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 
@@ -11,16 +19,7 @@ class AddComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visibility: false,
-      date: '',
-      active: 1,
-      colors: [
-        { id: 1, color: 'rgb(74,144,226)' },
-        { id: 2, color: 'rgb(223,244,199)' },
-        { id: 3, color: 'rgb(243,191,198)' },
-        { id: 4, color: 'rgb(238,195,247)' },
-        { id: 5, color: 'rgb(252,232,200)' }
-      ]
+      visibility: false
     };
   }
 
@@ -29,49 +28,55 @@ class AddComponent extends Component {
   }
 
   handleDatePicked(date) {
-    this.setState({ ...this.state, date: date });
+    this.props.onChange('dueDate', date);
   }
 
   handleBadgePress(active) {
-    this.setState({ ...this.state, active });
+    this.props.onChange('badge', active);
   }
 
   render() {
+    const { formData, onChange, onAdd, colors } = this.props;
+
     return (
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps={'handled'}>
         <View style={styles.inputView}>
           <TextInput
             multiline={true}
             placeholder={'What do you need to do?'}
             style={{ height: '100%', textAlignVertical: 'top' }}
+            value={formData.message}
+            onChangeText={text => onChange('message', text)}
           />
         </View>
-        <TouchableOpacity onPress={() => this.handlePicker(true)}>
+        <TouchableOpacity onPress={() => this.handlePicker(true)} style={{ marginVertical: 15 }}>
           <View style={styles.dateView} pointerEvents={'none'}>
             <Text style={{ color: '#999' }}>
-              {this.state.date
-                ? moment(this.state.date).format('MMMM Do YYYY, h:mm a')
+              {formData.dueDate
+                ? moment(formData.dueDate).format('MMMM Do YYYY, h:mm a')
                 : 'When is it due ?'}
             </Text>
           </View>
         </TouchableOpacity>
         <View style={styles.badgeContainer}>
-          {this.state.colors.map(item => (
-            <TouchableOpacity key={item.id} onPress={() => this.handleBadgePress(item.id)}>
-              <View
-                style={[
-                  styles.badgeView,
-                  {
-                    backgroundColor: item.color,
-                    opacity: item.id === this.state.active ? 1 : 0.5
-                  }
-                ]}
-                pointerEvents={'none'}
-              />
-            </TouchableOpacity>
-          ))}
+          {Object.keys(colors).map(key => {
+            const item = colors[key];
+            return (
+              <TouchableWithoutFeedback key={key} onPress={() => this.handleBadgePress(key)}>
+                <View
+                  style={[
+                    styles.badgeView,
+                    {
+                      backgroundColor: item,
+                      opacity: key == formData.badge ? 1 : 0.5
+                    }
+                  ]}
+                />
+              </TouchableWithoutFeedback>
+            );
+          })}
         </View>
-        <ButtonComponent title={'Add'} />
+        <ButtonComponent title={'Add'} onPress={onAdd} />
         <DateTimePicker
           isVisible={this.state.visibility}
           onConfirm={this.handleDatePicked.bind(this)}
@@ -80,13 +85,13 @@ class AddComponent extends Component {
           mode={'datetime'}
           is24Hour={false}
         />
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: '#fff', flex: 1, margin: 10 },
+  container: { backgroundColor: '#fff', minHeight: '100%', margin: 10 },
   inputView: {
     padding: 10,
     paddingVertical: 0,
@@ -99,8 +104,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 3,
     borderWidth: 0.5,
-    borderColor: '#dcdcdc',
-    marginVertical: 15
+    borderColor: '#dcdcdc'
   },
   badgeContainer: {
     flexDirection: 'row',
@@ -110,5 +114,12 @@ const styles = StyleSheet.create({
   },
   badgeView: { height: 50, width: 50, borderRadius: 25, marginHorizontal: 3 }
 });
+
+AddComponent.propTypes = {
+  onChange: PropTypes.func,
+  onAdd: PropTypes.func,
+  colors: PropTypes.object,
+  formData: PropTypes.object
+};
 
 export default AddComponent;
