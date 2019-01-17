@@ -6,7 +6,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 const ProfileComponent = props => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={props.onLogout}>
         <View pointerEvents={'none'} style={styles.btnView}>
           <Text style={{ color: 'rgb(255,59,48)' }}>Logout</Text>
         </View>
@@ -16,7 +16,7 @@ const ProfileComponent = props => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'flex-end' },
+  container: { flex: 1, justifyContent: 'flex-end', backgroundColor: '#fff' },
   btnView: {
     margin: 10,
     padding: 10,
@@ -26,5 +26,9 @@ const styles = StyleSheet.create({
     borderRadius: 3
   }
 });
+
+ProfileComponent.propTypes = {
+  onLogout: PropTypes.func
+};
 
 export default ProfileComponent;

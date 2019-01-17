@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import ButtonComponent from './../../../shared/components/button/button-component';
 
 const LoginComponent = props => {
   return (
@@ -14,13 +16,13 @@ const LoginComponent = props => {
         <Text style={styles.text}>Todo</Text>
         <View>
           <View style={styles.inputView}>
-            <TextInput placeholder={'Name'} />
+            <TextInput
+              placeholder={'Name'}
+              value={props.name}
+              onChangeText={text => props.onChange('name', text)}
+            />
           </View>
-          <TouchableOpacity>
-            <View style={styles.btnView} pointerEvents={'none'}>
-              <Text style={{ color: '#fff', textAlign: 'center' }}>Login</Text>
-            </View>
-          </TouchableOpacity>
+          <ButtonComponent title={'Login'} onPress={props.onSubmit} />
         </View>
       </View>
     </ScrollView>
@@ -61,5 +63,11 @@ const styles = StyleSheet.create({
     flex: 1
   }
 });
+
+LoginComponent.propTypes = {
+  name: PropTypes.string,
+  onSubmit: PropTypes.func,
+  onChange: PropTypes.func
+};
 
 export default LoginComponent;
